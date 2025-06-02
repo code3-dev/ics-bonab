@@ -148,7 +148,7 @@ export async function POST(request: Request) {
 
     // Fetch userName from users collection using userId
     const userDoc = await usersCollection.findOne({ _id: new ObjectId(tokenDoc.userId) });
-    if (!userDoc || !userDoc.name) {
+    if (!userDoc || !userDoc.name || !userDoc.lastName) {
       return NextResponse.json(
         { success: false, message: 'کاربر یافت نشد یا نام کاربری تعریف نشده است' },
         { status: 404 }
@@ -161,7 +161,7 @@ export async function POST(request: Request) {
       content,
       category,
       userId: tokenDoc.userId,
-      userName: userDoc.name,
+      userName: userDoc.name + " " + userDoc.lastName,
       createdAt: new Date().toISOString(),
       replies: []
     };
